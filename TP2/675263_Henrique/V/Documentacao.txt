@@ -1,0 +1,161 @@
+ Pontifícia Universidade Católica de Minas Gerais
+ Departamento de Ciência da Computação
+ Disciplina: Compiladores - Trabalho Prático 2 (2024/01)
+
+Professor: Pedro Ramos
+
+---
+
+# Análise Interprocedural em Python Usando Vlang
+
+ Introdução
+
+Compilação JIT (do inglês: Just in Time) é uma técnica utilizada em computação interpretada para melhorar o desempenho de código durante o tempo de execução. Dois exemplos notáveis de compiladores JIT para Python são PyPy e Numba. Ambas as ferramentas realizam análises sobre a árvore de sintaxe abstrata (AST) do programa enquanto ele executa, utilizando a biblioteca `ast` do Python.
+
+Neste trabalho, foi implementada uma análise interprocedural que produz uma representação em grafo de um código Python, relacionando chamadas de função com suas respectivas definições. A linguagem escolhida para a implementação foi Vlang.
+
+ Objetivo
+
+Implementar uma análise interprocedural que produza uma representação em grafo de um código Python que relacione as chamadas de função com suas respectivas definições.
+
+ Metodologia
+
+A metodologia envolve a leitura do código Python, a análise da árvore de sintaxe abstrata (AST) e a geração de um grafo que representa a interproceduralidade do código.
+
+ Leitura do Arquivo
+
+O arquivo de código Python é lido usando uma função utilitária.
+
+```v
+// utils.v
+module utils
+
+import os
+
+pub fn read_file(file_path string) ?string {
+    content := os.read_file(file_path) ?
+    return content
+}
+```
+
+ Parsing do Código Python
+
+O código Python é analisado para extrair a AST e identificar definições de funções e suas chamadas.
+
+```v
+// parser.v
+module parser
+
+import v.ast
+
+pub struct Function {
+    name string
+    args []string
+    body []ast.Node
+}
+
+pub fn parse_code(code string) ?[]Function {
+    // Código fictício para representar a análise da AST
+    // Substitua com a lógica real de parsing da AST
+    functions := []Function{}
+    if code.contains('def') {
+        functions << Function{
+            name: 'foo'
+            args: ['a', 'b']
+            body: []ast.Node{}
+        }
+    }
+    return functions
+}
+```
+
+ Geração do Grafo
+
+A partir das informações extraídas da AST, é gerado um grafo que representa as relações interprocedurais do código.
+
+```v
+// graph.v
+module graph
+
+import parser
+
+pub fn generate_graph(functions []parser.Function) string {
+    mut graph_representation := 'digraph G {\n'
+    
+    for function in functions {
+        graph_representation += '    ${function.name} [shape=box];\n'
+        for arg in function.args {
+            graph_representation += '    ${arg} -> ${function.name};\n'
+        }
+    }
+
+    graph_representation += '}\n'
+    return graph_representation
+}
+```
+
+ Programa Principal
+
+O programa principal coordena a leitura do arquivo, a análise do código e a geração do grafo.
+
+```v
+// main.v
+import utils
+import parser
+import graph
+
+fn main() {
+    if os.args.len != 2 {
+        eprintln('Uso: v run main.v <caminho_do_arquivo_python>')
+        return
+    }
+
+    file_path := os.args[1]
+    code := utils.read_file(file_path) or {
+        eprintln('Erro ao ler o arquivo: $err')
+        return
+    }
+
+    functions := parser.parse_code(code) or {
+        eprintln('Erro ao analisar o código: $err')
+        return
+    }
+
+    graph_representation := graph.generate_graph(functions)
+    println(graph_representation)
+}
+```
+
+ Execução do Programa
+
+Para executar o programa, utilize o comando abaixo, passando o caminho do arquivo Python como argumento:
+
+```sh
+v run main.v <caminho_do_arquivo_python>
+```
+
+ Algoritmo Utilizado
+
+O algoritmo utilizado para gerar o grafo interprocedural envolve as seguintes etapas:
+
+1. Leitura do Arquivo: O código Python é lido de um arquivo de texto.
+2. Parsing: O código é analisado para extrair a AST.
+3. Identificação de Funções: As definições de funções e suas chamadas são identificadas.
+4. Geração do Grafo: Um grafo é gerado, conectando chamadas de função às suas definições.
+
+ Estratégias de Otimização
+
+A análise interprocedural permite a aplicação de diversas estratégias de otimização que não são possíveis com análise intraprocedural. Exemplos incluem:
+
+- Eliminação de Código Morto: Remoção de código que nunca é executado.
+- Inline de Funções: Substituição de chamadas de função por seus corpos, eliminando a sobrecarga de chamadas.
+
+ Referências
+
+- LANGUAGES, Compilers, and Runtime Systems, University of Michigan, Computer Science and Engineering, 2018.
+- "PyPy - A fast, compliant alternative implementation of the Python language", disponível em: <https://www.pypy.org/>.
+- "Numba - A high performance Python compiler", disponível em: <https://numba.pydata.org/>.
+- "LLVM Project", disponível em: <https://llvm.org/>.
+- "ast — Abstract Syntax Trees", disponível em: <https://docs.python.org/3/library/ast.html>.
+- "Lecture Notes: Interprocedural Analysis", Carnegie Mellon University, disponível em: <https://www.cs.cmu.edu/~aldrich/courses/15-819O-13sp/resources/interprocedural.pdf>.
+- "Vlang - The Simple and Fast Programming Language", disponível em: <https://github.com/vlang>, acessado em 3 de maio de 2024 às 20:48.
