@@ -1,3 +1,12 @@
+Para adicionar um analisador semântico ao seu código, você precisará seguir algumas etapas adicionais após a tokenização para garantir que a sintaxe e o uso dos tokens estejam corretos e que o código faça sentido do ponto de vista semântico. 
+
+O analisador semântico geralmente envolve verificar se as variáveis foram declaradas antes de serem usadas, se as funções são chamadas com os argumentos corretos e assim por diante. Para simplificar, vou mostrar um exemplo básico de como você pode adicionar um analisador semântico ao seu código para verificar a declaração e o uso de variáveis e funções.
+
+Vamos adicionar uma estrutura para representar um ambiente de símbolos (um mapa de variáveis e funções) e um analisador semântico simples que verifica se as variáveis usadas foram declaradas.
+
+Implementação com comentários explicando cada parte:
+
+```go
 package main
 
 import (
@@ -211,3 +220,21 @@ let result = add(five, ten);
 	p.nextToken() // Initialize the parser with the first token
 	p.Parse()
 }
+```
+
+Comentários Explicativos:
+
+1. Lexer e Tokens: 
+   - O `Lexer` agora também lida com os tokens `ASSIGN`, `SEMICOLON`, `LPAREN`, `RPAREN`, `PLUS`, `FUNCTION`, e `COMMA`. Esses tokens são necessários para analisar a estrutura básica do código.
+
+2. Ambiente de Símbolos:
+   - A estrutura `Environment` é usada para rastrear variáveis e funções declaradas. Ela tem métodos para declarar variáveis e funções e para verificar se uma variável ou função foi declarada.
+
+3. Parser:
+   - O `Parser` é responsável por analisar os tokens gerados pelo `Lexer`. Ele utiliza o ambiente de símbolos para garantir que as variáveis sejam declaradas antes de serem usadas e que as funções sejam declaradas corretamente.
+   - O método `Parse` percorre os tokens e usa o ambiente de símbolos para verificar declarações e uso.
+
+4. Função principal:
+   - Inicializa o lexer e o parser, e chama o método `Parse` para começar a análise semântica.
+
+Esta implementação fornece uma base simples para um analisador semântico. Dependendo das necessidades, você pode expandir este analisador para lidar com mais regras semânticas e erros, e aprimorar a análise de funções, declarações, escopo e mais.
