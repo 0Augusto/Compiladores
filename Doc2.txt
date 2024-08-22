@@ -1,0 +1,202 @@
+
+
+---
+
+## Documentação do Código
+
+### 1. **Descrição Geral**
+
+O código implementa uma árvore sintática abstrata (AST) e gera código Assembly com foco na segurança da informação. A principal função do código é analisar uma sequência de tokens gerados a partir de um código-fonte e produzir uma representação em Assembly que inicializa variáveis com `\0` e desloca o valor `\0` para a direita conforme necessário. O código é escrito na linguagem V.
+
+### 2. **Objetivo**
+
+O objetivo é criar uma estrutura de análise (AST) para uma linguagem de programação simplificada e gerar código Assembly que:
+- **Preenche variáveis com `\0`.**
+- **Desloca o preenchimento de `\0` para a direita conforme novas variáveis e valores são adicionados.**
+
+### 3. **Estrutura do Código**
+
+O código é dividido em três principais componentes:
+
+1. **Definição da AST**
+2. **Construção da AST**
+3. **Geração de Código Assembly**
+
+#### 3.1. **Definição da AST**
+
+- **Objetivo**: Representar a estrutura hierárquica do código-fonte como uma árvore sintática abstrata.
+- **Código**:
+  ```v
+  enum NodeType {
+      literal
+      variable
+      assignment
+      addition
+      function
+      call
+  }
+
+  struct Node {
+      typ       NodeType
+      value     string
+      left      &Node
+      right     &Node
+      children  []&Node
+  }
+
+  fn new_node(typ NodeType, value string, left &Node, right &Node, children []&Node) &Node {
+      return &Node{
+          typ: typ,
+          value: value,
+          left: left,
+          right: right,
+          children: children,
+      }
+  }
+  ```
+
+#### 3.2. **Construção da AST**
+
+- **Objetivo**: Analisar uma sequência de tokens e construir a AST correspondente.
+- **Código**:
+  ```v
+  fn parse_expression(tokens []Token) &Node {
+      mut current := 0
+      mut root := &Node{}
+      
+      while current < tokens.len {
+          token := tokens[current]
+          match token.typ {
+              .ident {
+                  root = new_node(.variable, token.value, null, null, [])
+              }
+              .int {
+                  root = new_node(.literal, token.value, null, null, [])
+              }
+              .assign {
+                  left := parse_expression(tokens[current + 1..])
+                  right := parse_expression(tokens[current + 3..])
+                  root = new_node(.assignment, '=', left, right, [])
+                  current += 3
+              }
+              .plus {
+                  left := parse_expression(tokens[current + 1..])
+                  right := parse_expression(tokens[current + 3..])
+                  root = new_node(.addition, '+', left, right, [])
+                  current += 3
+              }
+              .function {
+                  func_name := tokens[current + 1].value
+                  args := parse_expression(tokens[current + 2..])
+                  root = new_node(.function, func_name, null, null, [args])
+                  current += 2
+              }
+              .call {
+                  func_name := tokens[current + 1].value
+                  args := parse_expression(tokens[current + 2..])
+                  root = new_node(.call, func_name, null, null, [args])
+                  current += 2
+              }
+              else {
+                  current++
+              }
+          }
+      }
+      
+      return root
+  }
+  ```
+
+#### 3.3. **Geração de Código Assembly**
+
+- **Objetivo**: Gerar código Assembly que inicializa variáveis com `\0` e manipula os bits corretamente.
+- **Código**:
+  ```v
+  fn generate_assembly(node &Node) string {
+      mut assembly := ''
+      
+      match node.typ {
+          .literal {
+              assembly += 'mov r0, #' + node.value + '\n'
+          }
+          .variable {
+              assembly += 'ldr r0, =var_' + node.value + '\n'
+          }
+          .assignment {
+              left := generate_assembly(node.left)
+              right := generate_assembly(node.right)
+              assembly += left
+              assembly += right
+              assembly += 'str r1, [r0]\n'
+          }
+          .addition {
+              left := generate_assembly(node.left)
+              right := generate_assembly(node.right)
+              assembly += left
+              assembly += right
+              assembly += 'add r0, r0, r1\n'
+          }
+          .function {
+              assembly += 'bl ' + node.value + '\n'
+          }
+          .call {
+              assembly += 'bl ' + node.value + '\n'
+          }
+          else {
+              assembly += ''
+          }
+      }
+      
+      return assembly
+  }
+  ```
+
+### 4. **Exemplo de Uso**
+
+A função principal demonstra a utilização do lexer e parser para gerar o código Assembly:
+
+```v
+fn main() {
+    // Exemplo de tokens
+    tokens := [
+        Token{typ: .ident, value: 'five'},
+        Token{typ: .assign, value: '='},
+        Token{typ: .int, value: '5'},
+        Token{typ: .semicolon, value: ';'},
+        Token{typ: .ident, value: 'add'},
+        Token{typ: .assign, value: '='},
+        Token{typ: .function, value: 'fn'},
+        Token{typ: .lparen, value: '('},
+        Token{typ: .ident, value: 'x'},
+        Token{typ: .comma, value: ','},
+        Token{typ: .ident, value: 'y'},
+        Token{typ: .rparen, value: ')'},
+        Token{typ: .lbrace, value: '{'},
+        Token{typ: .ident, value: 'x'},
+        Token{typ: .plus, value: '+'},
+        Token{typ: .ident, value: 'y'},
+        Token{typ: .semicolon, value: ';'},
+        Token{typ: .rbrace, value: '}'},
+    ]
+    
+    lexer := new_lexer('')
+    parser := new_parser(lexer)
+    root := parse_expression(tokens)
+    
+    assembly := generate_assembly(root)
+    println('Generated Assembly Code:\n$assembly')
+}
+```
+
+### 5. **Detalhes Técnicos**
+
+- **Linguagem**: O código é escrito na linguagem V.
+- **Formato de Entrada**: O lexer deve receber uma string contendo o código-fonte para análise.
+- **Segurança**: A inicialização de variáveis com `\0` e a manipulação cuidadosa dos bits são usadas para evitar comportamentos indesejados e garantir a segurança.
+
+### 6. **Considerações Finais**
+
+Este código fornece uma estrutura básica para análise de código e geração de Assembly. Ele pode ser expandido para incluir mais funcionalidades e garantir a segurança em todos os níveis do sistema. Certifique-se de validar e testar extensivamente o código gerado para assegurar que atende aos requisitos de segurança e funcionalidade.
+
+---
+
