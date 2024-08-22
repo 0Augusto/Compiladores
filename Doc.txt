@@ -1,28 +1,27 @@
-Para documentar o código em conformidade com as normas da Sociedade Brasileira de Computação (SBC), você deve seguir um padrão claro e detalhado. Vou estruturar a documentação em seções que cobrem a descrição do sistema, suas funções principais, e como usar o código. 
 
-### Documentação Detalhada do Código
+ Documentação Detalhada do Código
 
 ---
 
-#### 1. **Descrição Geral**
+# 1. Descrição Geral
 
 Este código implementa um lexer e um parser básicos para uma linguagem de programação simples. O lexer é responsável por dividir a entrada em tokens, enquanto o parser interpreta esses tokens e verifica se as variáveis e funções são usadas corretamente. A linguagem suportada inclui operações aritméticas básicas e declarações de variáveis e funções.
 
-#### 2. **Estrutura do Código**
+# 2. Estrutura do Código
 
 O código é escrito na linguagem de programação V e está organizado em quatro principais componentes:
 
-1. **Lexer**: Classe responsável por identificar e gerar tokens a partir da entrada.
-2. **Environment**: Classe que armazena as variáveis e funções declaradas.
-3. **Parser**: Classe que interpreta os tokens e realiza a validação de declarações e uso de variáveis e funções.
-4. **Função Principal**: Inicializa o lexer e o parser, e executa a análise do código de entrada.
+1. Lexer: Classe responsável por identificar e gerar tokens a partir da entrada.
+2. Environment: Classe que armazena as variáveis e funções declaradas.
+3. Parser: Classe que interpreta os tokens e realiza a validação de declarações e uso de variáveis e funções.
+4. Função Principal: Inicializa o lexer e o parser, e executa a análise do código de entrada.
 
-#### 3. **Componentes do Código**
+# 3. Componentes do Código
 
-##### 3.1. **Lexer**
+## 3.1. Lexer
 
-- **Descrição**: O `Lexer` é responsável por ler a entrada caractere por caractere e gerar tokens correspondentes.
-- **Métodos**:
+- Descrição: O `Lexer` é responsável por ler a entrada caractere por caractere e gerar tokens correspondentes.
+- Métodos:
   - `new_lexer(input string) &Lexer`: Cria uma nova instância do lexer.
   - `read_char()`: Lê o próximo caractere da entrada.
   - `next_token() Token`: Gera o próximo token da entrada.
@@ -30,31 +29,31 @@ O código é escrito na linguagem de programação V e está organizado em quatr
   - `read_number() string`: Lê uma sequência de caracteres que formam um número.
   - `skip_whitespace()`: Ignora os caracteres de espaço em branco.
   
-- **Enumerações**:
+- Enumerações:
   - `TokenType`: Define os tipos de tokens, como `ident`, `int`, `assign`, etc.
 
-##### 3.2. **Environment**
+## 3.2. Environment
 
-- **Descrição**: O `Environment` mantém um registro das variáveis e funções declaradas.
-- **Métodos**:
+- Descrição: O `Environment` mantém um registro das variáveis e funções declaradas.
+- Métodos:
   - `new_environment() &Environment`: Cria uma nova instância do ambiente.
   - `declare_variable(name string)`: Declara uma nova variável.
   - `declare_function(name string)`: Declara uma nova função.
   - `is_variable_declared(name string) bool`: Verifica se uma variável foi declarada.
   - `is_function_declared(name string) bool`: Verifica se uma função foi declarada.
 
-##### 3.3. **Parser**
+## 3.3. Parser
 
-- **Descrição**: O `Parser` interpreta a sequência de tokens gerados pelo lexer e valida se o código está correto em termos de declaração e uso de variáveis e funções.
-- **Métodos**:
+- Descrição: O `Parser` interpreta a sequência de tokens gerados pelo lexer e valida se o código está correto em termos de declaração e uso de variáveis e funções.
+- Métodos:
   - `new_parser(lexer &Lexer) &Parser`: Cria uma nova instância do parser.
   - `parse()`: Realiza a análise completa do código.
   - `next_token()`: Move para o próximo token na sequência.
 
-##### 3.4. **Função Principal**
+## 3.4. Função Principal
 
-- **Descrição**: A função principal (`main`) inicializa o lexer e o parser com um código de entrada e inicia o processo de análise.
-- **Código**:
+- Descrição: A função principal (`main`) inicializa o lexer e o parser com um código de entrada e inicia o processo de análise.
+- Código:
   ```v
   fn main() {
       input := 'let five = 5;\nlet ten = 10;\nlet add = fn(x, y) {\n  x + y;\n};\nlet result = add(five, ten);\n'
@@ -66,17 +65,17 @@ O código é escrito na linguagem de programação V e está organizado em quatr
   }
   ```
 
-#### 4. **Exemplo de Uso**
+# 4. Exemplo de Uso
 
 Para testar o código, execute o programa com uma string de entrada que contém variáveis e funções. O lexer analisará a entrada e o parser validará se as declarações são corretas e se as variáveis são usadas corretamente.
 
-#### 5. **Detalhes Técnicos**
+# 5. Detalhes Técnicos
 
-- **Linguagem**: O código é escrito na linguagem V.
-- **Dependências**: Não há dependências externas além da biblioteca padrão da linguagem V.
-- **Formato de Entrada**: A entrada para o lexer deve ser uma string contendo o código da linguagem a ser analisada.
+- Linguagem: O código é escrito na linguagem V.
+- Dependências: Não há dependências externas além da biblioteca padrão da linguagem V.
+- Formato de Entrada: A entrada para o lexer deve ser uma string contendo o código da linguagem a ser analisada.
 
-#### 6. **Considerações Finais**
+# 6. Considerações Finais
 
 Este código é uma implementação básica de um lexer e parser e pode ser expandido para suportar mais características da linguagem, como operadores adicionais, controle de fluxo e tipos de dados mais complexos. A documentação e o código são projetados para fornecer uma base sólida para a construção de compiladores ou interpretadores mais avançados.
 
