@@ -1,31 +1,31 @@
-
+@author: Henrique Augusto
 
 ---
 
-## Documentação do Código
+## Code Documentation
 
-### 1. **Descrição Geral**
+### 1. **General Description**
 
-O código implementa uma árvore sintática abstrata (AST) e gera código Assembly com foco na segurança da informação. A principal função do código é analisar uma sequência de tokens gerados a partir de um código-fonte e produzir uma representação em Assembly que inicializa variáveis com `\0` e desloca o valor `\0` para a direita conforme necessário. O código é escrito na linguagem V.
+The code implements an Abstract Syntax Tree (AST) and generates Assembly code with a focus on information security. The main function of the code is to analyze a sequence of tokens generated from source code and produce an Assembly representation that initializes variables with `\0` and shifts the `\0` value to the right as needed. The code is written in the V programming language.
 
-### 2. **Objetivo**
+### 2. **Objective**
 
-O objetivo é criar uma estrutura de análise (AST) para uma linguagem de programação simplificada e gerar código Assembly que:
-- **Preenche variáveis com `\0`.**
-- **Desloca o preenchimento de `\0` para a direita conforme novas variáveis e valores são adicionados.**
+The goal is to create an AST structure for a simplified programming language and generate Assembly code that:
+- **Fills variables with `\0`.**
+- **Shifts the `\0` filling to the right as new variables and values are added.**
 
-### 3. **Estrutura do Código**
+### 3. **Code Structure**
 
-O código é dividido em três principais componentes:
+The code is divided into three main components:
 
-1. **Definição da AST**
-2. **Construção da AST**
-3. **Geração de Código Assembly**
+1. **AST Definition**
+2. **AST Construction**
+3. **Assembly Code Generation**
 
-#### 3.1. **Definição da AST**
+#### 3.1. **AST Definition**
 
-- **Objetivo**: Representar a estrutura hierárquica do código-fonte como uma árvore sintática abstrata.
-- **Código**:
+- **Objective**: Represent the hierarchical structure of the source code as an Abstract Syntax Tree.
+- **Code**:
   ```v
   enum NodeType {
       literal
@@ -55,10 +55,10 @@ O código é dividido em três principais componentes:
   }
   ```
 
-#### 3.2. **Construção da AST**
+#### 3.2. **AST Construction**
 
-- **Objetivo**: Analisar uma sequência de tokens e construir a AST correspondente.
-- **Código**:
+- **Objective**: Analyze a sequence of tokens and construct the corresponding AST.
+- **Code**:
   ```v
   fn parse_expression(tokens []Token) &Node {
       mut current := 0
@@ -107,10 +107,10 @@ O código é dividido em três principais componentes:
   }
   ```
 
-#### 3.3. **Geração de Código Assembly**
+#### 3.3. **Assembly Code Generation**
 
-- **Objetivo**: Gerar código Assembly que inicializa variáveis com `\0` e manipula os bits corretamente.
-- **Código**:
+- **Objective**: Generate Assembly code that initializes variables with `\0` and manipulates bits correctly.
+- **Code**:
   ```v
   fn generate_assembly(node &Node) string {
       mut assembly := ''
@@ -151,13 +151,13 @@ O código é dividido em três principais componentes:
   }
   ```
 
-### 4. **Exemplo de Uso**
+### 4. **Usage Example**
 
-A função principal demonstra a utilização do lexer e parser para gerar o código Assembly:
+The main function demonstrates the use of the lexer and parser to generate Assembly code:
 
 ```v
 fn main() {
-    // Exemplo de tokens
+    // Example tokens
     tokens := [
         Token{typ: .ident, value: 'five'},
         Token{typ: .assign, value: '='},
@@ -188,15 +188,15 @@ fn main() {
 }
 ```
 
-### 5. **Detalhes Técnicos**
+### 5. **Technical Details**
 
-- **Linguagem**: O código é escrito na linguagem V.
-- **Formato de Entrada**: O lexer deve receber uma string contendo o código-fonte para análise.
-- **Segurança**: A inicialização de variáveis com `\0` e a manipulação cuidadosa dos bits são usadas para evitar comportamentos indesejados e garantir a segurança.
+- **Language**: The code is written in the V programming language.
+- **Input Format**: The lexer should receive a string containing the source code for analysis.
+- **Security**: The initialization of variables with `\0` and careful manipulation of bits are used to prevent unwanted behaviors and ensure security.
 
-### 6. **Considerações Finais**
+### 6. **Final Considerations**
 
-Este código fornece uma estrutura básica para análise de código e geração de Assembly. Ele pode ser expandido para incluir mais funcionalidades e garantir a segurança em todos os níveis do sistema. Certifique-se de validar e testar extensivamente o código gerado para assegurar que atende aos requisitos de segurança e funcionalidade.
+This code provides a basic framework for code analysis and Assembly generation. It can be extended to include more functionalities and ensure security at all system levels. Be sure to validate and test the generated code extensively to ensure it meets security and functionality requirements.
 
 ---
 
