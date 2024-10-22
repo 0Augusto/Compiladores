@@ -6,6 +6,23 @@ typedef struct Node {
     struct Node* next;
 } Node;
 
+// Função para adicionar um nó no início da lista
+void addNode(Node** headRef, int newData) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = newData;
+    newNode->next = *headRef;
+    *headRef = newNode;
+}
+
+// Função para imprimir a lista
+void printList(Node* node) {
+    while (node != NULL) {
+        printf("%d -> ", node->data);
+        node = node->next;
+    }
+    printf("NULL\n");
+}
+
 // Função para dividir a lista em duas metades
 void splitList(Node* source, Node** frontRef, Node** backRef) {
     Node* fast;
@@ -83,4 +100,3 @@ int main() {
 
     return 0;
 }
-
