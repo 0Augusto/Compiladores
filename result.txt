@@ -1,0 +1,11 @@
+Analisando binário: helloworld
+
+=== Análise de Código Morto ===
+
+Funções potencialmente mortas:
+- never_called (endereço: 0x...)
+
+Estatísticas:
+Total de funções: 3
+Funções potencialmente mortas: 1
+Porcentagem de código morto: 33.33%
