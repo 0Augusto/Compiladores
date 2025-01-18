@@ -1,0 +1,12 @@
+Análise do arquivo ackermann:
+----------------------------------------
+Instruções antes do DCE:
+2
+Instruções após DCE:
+2
+
+Diferenças encontradas:
+1c1
+< ; ModuleID = '../ackermann.c'
+---
+> ; ModuleID = 'ackermann.ll'

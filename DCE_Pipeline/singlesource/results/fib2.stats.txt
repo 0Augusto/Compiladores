@@ -1,0 +1,12 @@
+Análise do arquivo fib2:
+----------------------------------------
+Instruções antes do DCE:
+2
+Instruções após DCE:
+2
+
+Diferenças encontradas:
+1c1
+< ; ModuleID = '../fib2.c'
+---
+> ; ModuleID = 'fib2.ll'

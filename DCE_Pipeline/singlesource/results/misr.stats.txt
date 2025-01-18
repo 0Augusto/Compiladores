@@ -1,0 +1,12 @@
+Análise do arquivo misr:
+----------------------------------------
+Instruções antes do DCE:
+5
+Instruções após DCE:
+5
+
+Diferenças encontradas:
+1c1
+< ; ModuleID = '../misr.c'
+---
+> ; ModuleID = 'misr.ll'

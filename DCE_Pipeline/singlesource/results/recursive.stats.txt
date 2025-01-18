@@ -1,0 +1,12 @@
+Análise do arquivo recursive:
+----------------------------------------
+Instruções antes do DCE:
+6
+Instruções após DCE:
+6
+
+Diferenças encontradas:
+1c1
+< ; ModuleID = '../recursive.c'
+---
+> ; ModuleID = 'recursive.ll'

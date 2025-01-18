@@ -1,0 +1,32 @@
+Análise com O0:
+----------------------------------------
+Instruções antes do DCE:
+13
+Instruções após DCE:
+13
+
+
+Análise com O1:
+----------------------------------------
+Instruções antes do DCE:
+13
+Instruções após DCE:
+13
+
+
+Análise com O2:
+----------------------------------------
+Instruções antes do DCE:
+13
+Instruções após DCE:
+13
+
+
+Análise com O3:
+----------------------------------------
+Instruções antes do DCE:
+13
+Instruções após DCE:
+13
+
+

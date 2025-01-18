@@ -1,0 +1,16 @@
+Análise do arquivo chomp:
+----------------------------------------
+Instruções antes do DCE:
+22
+Instruções após DCE:
+22
+
+Diferenças encontradas:
+1c1
+< ; ModuleID = '../chomp.c'
+---
+> ; ModuleID = 'chomp.ll'
+1369c1369
+< 109:                                              ; preds = %0, %107, %78, %48
+---
+> 109:                                              ; preds = %107, %78, %48, %0
