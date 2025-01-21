@@ -1,6 +1,0 @@
-Análise do arquivo ReedSolomon:
-----------------------------------------
-Instruções antes do DCE:
-Instruções após DCE:
-
-Diferenças encontradas:
